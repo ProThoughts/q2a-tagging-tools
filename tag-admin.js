@@ -19,11 +19,11 @@ function ajax_retag()
 			}
 			else {
 				$ok.text(langProgess.replace('^1', posts_left));
-				window.setTimeout(ajax_retag, 1500);
+				window.setTimeout(ajax_retag, 1000);
 			}
 
 		}
 	});
 }
 
-$(window).load(ajax_retag);
+$(window).on('load', ajax_retag);

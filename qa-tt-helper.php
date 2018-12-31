@@ -1,7 +1,8 @@
 <?php
 /*
 	Question2Answer Tagging Tools plugin
-	License: http://www.gnu.org/licenses/gpl.html
+	Copyright (C) 2011 Scott Vivian
+	License: https://www.gnu.org/licenses/gpl.html
 */
 
 // Tagging Tools helper functions
@@ -10,17 +11,22 @@ class qa_tt_helper
 	// converts a config string of synonyms to an array [[A,B],[C,D]]
 	public static function synonyms_to_array($config)
 	{
-		$synonyms = array();
+		$synonyms = [];
 		$lines = explode("\n", $config);
 
 		foreach ($lines as $line) {
 			$items = explode(',', $line);
 			if (!isset($items[1]))
 				$items[1] = '';
-			$synonyms[] = array(
+
+			// ignore tags being replaced by the same one
+			if ($items[0] === $items[1])
+				continue;
+
+			$synonyms[] = [
 				'from' => trim($items[0]),
 				'to' => trim($items[1]),
-			);
+			];
 		}
 
 		return $synonyms;
@@ -29,7 +35,7 @@ class qa_tt_helper
 	// converts each tag to a synonym if it exists
 	public static function convert_tags($tags, $synonyms)
 	{
-		$newtags = array();
+		$newtags = [];
 
 		foreach ($tags as $tag) {
 			$tag = strtolower($tag);
